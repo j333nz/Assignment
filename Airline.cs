@@ -6,7 +6,36 @@ using System.Threading.Tasks;
 
 namespace Assignment
 {
-    internal class Airline
+    class Airline
     {
+        public string Name { get; set; }
+        public string Code { get; set; }
+        public Dictionary<string, Flight> flightsDict { get; set; } = new Dictionary<string, Flight>();
+        public Airline () { }
+        public Airline(string n, string c)
+        {
+            Name = n;
+            Code = c;
+        }
+        public bool AddFlight(Flight f)
+        {
+            if (flightsDict.ContainsKey(f.FlightNumber))
+            {
+                return false;
+            }
+            flightsDict.Add(f.FlightNumber, f);
+        }
+        public double CalculateFees()
+        {
+
+        }
+        public bool RemoveFlight(Flight f)
+        {
+            if (flightsDict.ContainsKey(f.FlightNumber))
+            {
+                flightsDict.Remove(f.FlightNumber);
+                return true;
+            }
+            return false;
     }
 }
