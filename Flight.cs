@@ -28,7 +28,11 @@ namespace Assignment
         }
         public override string ToString()
         {
-            return FlightNumber + "\t" + Origin + "\t" + Destination + "\t" ExpectedTime + "\t" Status;
+            return "Flight Number: " + FlightNumber +
+                "\nOrigin: " + Origin + 
+                "\nDestination: " + Destination +
+                "\nExpected Time" + ExpectedTime + 
+                "\nStatus:" Status;
         }
     }
 }

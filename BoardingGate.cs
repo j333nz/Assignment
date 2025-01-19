@@ -8,7 +8,7 @@ namespace Assignment
 {
     class BoardingGate
     {
-        public string GetName { get; set; }
+        public string GateName { get; set; }
         public bool SupportsCFFT { get; set; }
         public bool SupportsDDJB { get; set; }
         public bool SupportsLWTT { get; set; }
@@ -16,7 +16,7 @@ namespace Assignment
         public BoardingGate() { }
         public BoardingGate(string g, bool c, bool d, bool l, Flight f)
         {
-            GetName = g;
+            GateName = g;
             SupportsCFFT = c;
             SupportsDDJB = d;
             SupportsLWTT = l;
