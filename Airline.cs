@@ -11,7 +11,7 @@ namespace Assignment
         public string Name { get; set; }
         public string Code { get; set; }
         public Dictionary<string, Flight> flightsDict { get; set; } = new Dictionary<string, Flight>();
-        public Airline () { }
+        public Airline() { }
         public Airline(string n, string c)
         {
             Name = n;
@@ -37,5 +37,11 @@ namespace Assignment
                 return true;
             }
             return false;
+        }
+        public override string ToString()
+        {
+            return "Name" + "\t" + "Code" +
+                "\n" + Name + "\t" + Code;
+        }
     }
 }
