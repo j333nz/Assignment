@@ -11,7 +11,7 @@ namespace Assignment
         public string TerminalName { get; set }
         public Dictionary<string, Airline> airlineDict { get; set; } = new Dictionary<string, Airline> ();
         public Dictionary<string, Flight> flightsDict { get; set; } = new Dictionary<string, Flight>();
-        public Dictionary<string, BoardingGates> boardinggateDict { get; set; } = new Dictionary<string, BoardingGates> ();
+        public Dictionary<string, BoardingGate> boardinggateDict { get; set; } = new Dictionary<string, BoardingGates> ();
         public Disctionary<string, double> gatefeesDict { get; set; } = new Disctionary<string, double> ();
 
         public Terminal() { }
@@ -47,7 +47,10 @@ namespace Assignment
         }
         public void PrintAirlineFees()
         {
-            foreach (KeyValuePair<>)
+            foreach (KeyValuePair<string, BoardingGate> kvp in boardinggateDict)
+            {
+                Console.WriteLine($"{kvp.Value.GateName} - {kvp.Value.CalculateFees()}");
+            }
         }
         public override string ToString()
         {
