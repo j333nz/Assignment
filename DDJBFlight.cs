@@ -16,7 +16,7 @@ namespace Assignment
         }
         public override double CalculateFees()
         {
-            return base.CalculateFees() + RequestFee;
+            return 300/*base.CalculateFees() + RequestFee*/;
         }
         public override string ToString()
         {

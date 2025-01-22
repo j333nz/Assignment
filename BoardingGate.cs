@@ -14,13 +14,12 @@ namespace Assignment
         public bool SupportsLWTT { get; set; }
         public Flight Flight { get; set; }
         public BoardingGate() { }
-        public BoardingGate(string g, bool c, bool d, bool l, Flight f)
+        public BoardingGate(string g, bool c, bool d, bool l)
         {
             GateName = g;
             SupportsCFFT = c;
             SupportsDDJB = d;
             SupportsLWTT = l;
-            Flight = f;
         }
         public double CalculateFees()
         {
@@ -43,7 +42,7 @@ namespace Assignment
         }
         public override string ToString()
         {
-            return GetName;
+            return GateName;
         }
     }
 }

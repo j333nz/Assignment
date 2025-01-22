@@ -7,34 +7,43 @@ using Assignment;
 //Q1
 Dictionary<string, string> airlinesDict= new Dictionary<string, string>();
 Dictionary<string, BoardingGate> boardinggateDict = new Dictionary<string, BoardingGate>();
-string airlineLines[] = File.ReadAllLines("airlines.csv");
-foreach (string line in airlineLines)
+string[] airlineLines = File.ReadAllLines("airlines.csv");
+for (int i = 1; i< airlineLines.Length; i++ )
 {
-    string[] data = line.Split(',');
-    Airline a = new Airline(data[0], data[1]);
-    airlinesDict.Add(a.Code, a);
+    string[] data = airlineLines[i].Split(',');
+    string airlineName = data[0];
+    string airlineCode = data[1];
+    Airline a = new Airline(airlineName, airlineCode);
+    airlinesDict.Add(a.Code, a.Name);
 }
-string boardinggateLines[] = File.ReadAllLines("boardinggates.csv");
-foreach (string line in boardinggateLines)
+string[] boardinggateLines = File.ReadAllLines("boardinggates.csv");
+for (int i = 1; i < boardinggateLines.Length; i++)
 {
-    string[] data = line.Split(",");
-    BoardingGate b = new BoardingGate(data[0], data[1], data[2], data[3]);
+    string[] data = boardinggateLines[i].Split(",");
+    string boardinggateName = data[0];
+    bool ddjb = Convert.ToBoolean(data[1]);
+    bool cfft = Convert.ToBoolean(data[2]);
+    bool lwtt = Convert.ToBoolean(data[3]);
+    BoardingGate b = new BoardingGate(boardinggateName, cfft, ddjb, lwtt);
     boardinggateDict.Add(b.GateName, b);
 }
 
 //Q2
 Dictionary<string, Flight> flightsDict = new Dictionary<string, Flight>();
-string flightLnes[] = File.ReadAllLines("flights.csv");
+string[] flightLines = File.ReadAllLines("flights.csv");
 
-foreach (string line in flightLnes)
+for (int i = 1; i < flightLines.Length; i++)
 {
-    string[] data = line.Split(',');
-    Flight f = new Flight(data[0], data[1], data[2], Convert.ToDateTime(data[3]), data[4]);
-    flightsDict.Add(data[0], f);
+    string[] data = flightLines[i].Split(',');
+    string flightNumber = data[0];
+    string origin = data[1];
+    string destination = data[2];
+    DateTime expectedDate = Convert.ToDateTime(data[3]);
+    string status = data[4];
 }
 
 //Q3
-void LoadFiles(Dictionary<string, Flight>(), Dictionary<string, string>())
+void LoadFiles(Dictionary<string, Flight> flightsDict, Dictionary<string, string> airlinesDict )
 {
     Console.WriteLine("=============================================" +
         "\r\nList of Flights for Changi Airport Terminal 5" +
@@ -53,14 +62,15 @@ void LoadFiles(Dictionary<string, Flight>(), Dictionary<string, string>())
 }
 
 //Q4
-void ListBoardingGates(Dictionary<string, BoardingGate>())
+void ListBoardingGates(Dictionary<string, BoardingGate> boardinggateDict)
 {
     Console.WriteLine("=============================================" +
         "\r\nList of Boarding Gates for Changi Airport Terminal 5" +
         "\r\n=============================================");
-    foreach (KeyValuePair<string, BoardingGate> kvp in boardingDict)
+    Console.WriteLine("Gate Name", "DDJB", "CFFT", "LWTT");
+    foreach (BoardingGate boardingGate in boardinggateDict.Values)
     {
-        Console.WriteLine($"{kvp.GetName} {kvp.SupportsDDJB} {kvp.SupportsCFFT} {kvp.SupportsLWTT}");
+        Console.WriteLine($"{boardingGate.GateName} {boardingGate.SupportsDDJB} {boardingGate.SupportsCFFT} {boardingGate.}");
     }
 }
 

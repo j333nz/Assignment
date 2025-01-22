@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Assignment
 {
-    class LWTTFlight : FLight
+    class LWTTFlight : Flight
     {
         public double RequestFee { get; set; }
         public LWTTFlight() { }
@@ -16,7 +16,7 @@ namespace Assignment
         }
         public override double CalculateFees()
         {
-            return base.CalculateFees() + RequestFee;
+            return 500 /* base.CalculateFees() + RequestFee*/;
         }
         public override string ToString()
         {
