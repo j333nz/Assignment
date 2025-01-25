@@ -27,7 +27,7 @@ namespace Assignment
         }
         public double CalculateFees()
         {
-
+            return 0; //idk what to put
         }
         public bool RemoveFlight(Flight f)
         {

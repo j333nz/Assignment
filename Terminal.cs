@@ -8,7 +8,7 @@ namespace Assignment
 {
     class Terminal
     {
-        public string TerminalName { get; set }
+        public string TerminalName { get; set; }
         public Dictionary<string, Airline> airlineDict { get; set; } = new Dictionary<string, Airline> ();
         public Dictionary<string, Flight> flightsDict { get; set; } = new Dictionary<string, Flight>();
         public Dictionary<string, BoardingGate> boardinggateDict { get; set; } = new Dictionary<string, BoardingGates> ();

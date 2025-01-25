@@ -14,9 +14,9 @@ namespace Assignment
         {
             RequestFee = fee;
         }
-        public override double CalculateFees()
+        public double CalculateFees()
         {
-            return 500 /* base.CalculateFees() + RequestFee*/;
+            return base.CalculateFees() + RequestFee;
         }
         public override string ToString()
         {

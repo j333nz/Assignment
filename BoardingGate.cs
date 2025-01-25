@@ -23,21 +23,22 @@ namespace Assignment
         }
         public double CalculateFees()
         {
+            double baseFee = 300;
             if (SupportsDDJB)
             {
-                return 300;
+                return baseFee + 300;
             }
             else if (SupportsCFFT)
             {
-                return 150;
+                return baseFee + 150;
             }
             else if (SupportsLWTT)
             {
-                return 500;
+                return baseFee+ 500;
             }
             else
             {
-                return 0;
+                return baseFee;
             }
         }
         public override string ToString()
