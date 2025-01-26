@@ -24,10 +24,16 @@ namespace Assignment
                 return false;
             }
             flightsDict.Add(f.FlightNumber, f);
+            return true;
         }
         public double CalculateFees()
         {
-            return 0; //idk what to put
+            double totalFees = 0;
+            foreach (KeyValuePair<string, Flight> kvp in flightsDict)
+            {
+                totalFees += kvp.Value.CalculateFees();
+            }
+            return totalFees;
         }
         public bool RemoveFlight(Flight f)
         {
@@ -40,8 +46,7 @@ namespace Assignment
         }
         public override string ToString()
         {
-            return "Name" + "\t" + "Code" +
-                "\n" + Name + "\t" + Code;
+            return "Name: " + Name + "\nCode: " + Code;
         }
     }
 }

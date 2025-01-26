@@ -24,26 +24,11 @@ namespace Assignment
         public double CalculateFees()
         {
             double baseFee = 300;
-            if (SupportsDDJB)
-            {
-                return baseFee + 300;
-            }
-            else if (SupportsCFFT)
-            {
-                return baseFee + 150;
-            }
-            else if (SupportsLWTT)
-            {
-                return baseFee+ 500;
-            }
-            else
-            {
-                return baseFee;
-            }
+            return baseFee;
         }
         public override string ToString()
         {
-            return GateName;
+            return "Gate Name: " + GateName + "\nSupports CFFT: " + SupportsCFFT + "\nSupports DDJB: " + SupportsDDJB + "\nSupports LWTT: " + SupportsLWTT;
         }
     }
 }

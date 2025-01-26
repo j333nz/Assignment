@@ -22,7 +22,7 @@ namespace Assignment
             ExpectedTime = e;
             Status = s;
         }
-        public double CalculateFees()
+        public virtual double CalculateFees()
         {
             if (Origin == "Singapore (SIN)")
             {

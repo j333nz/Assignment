@@ -10,7 +10,7 @@ namespace Assignment
     {
         public NORMFlight() { }
         public NORMFlight(string f, string o, string d, DateTime e, string s) : base(f, o, d, e, s) { }
-        public double CalculateFees()
+        public override double CalculateFees()
         {
             return base.CalculateFees();
         }

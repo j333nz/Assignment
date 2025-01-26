@@ -11,8 +11,8 @@ namespace Assignment
         public string TerminalName { get; set; }
         public Dictionary<string, Airline> airlineDict { get; set; } = new Dictionary<string, Airline> ();
         public Dictionary<string, Flight> flightsDict { get; set; } = new Dictionary<string, Flight>();
-        public Dictionary<string, BoardingGate> boardinggateDict { get; set; } = new Dictionary<string, BoardingGates> ();
-        public Disctionary<string, double> gatefeesDict { get; set; } = new Disctionary<string, double> ();
+        public Dictionary<string, BoardingGate> boardinggateDict { get; set; } = new Dictionary<string, BoardingGate> ();
+        public Dictionary<string, double> gatefeesDict { get; set; } = new Dictionary<string, double> ();
 
         public Terminal() { }
         public Terminal(string n)
@@ -39,17 +39,20 @@ namespace Assignment
         }
         public Airline GetAirlineFromFlight(Flight f)
         {
-            if (airlineDict.ContainsKey(f.FlightNumber))
+            foreach (KeyValuePair<string, Airline> kvp in airlineDict)
             {
-                return airlineDict[f.FlightNumber];
+                if (kvp.Value.flightsDict.ContainsKey(f.FlightNumber))
+                {
+                    return kvp.Value;
+                }
             }
             return null;
         }
         public void PrintAirlineFees()
         {
-            foreach (KeyValuePair<string, BoardingGate> kvp in boardinggateDict)
+            foreach (KeyValuePair<string, Airline> kvp in airlineDict)
             {
-                Console.WriteLine($"{kvp.Value.GateName} - {kvp.Value.CalculateFees()}");
+                Console.WriteLine($"Airline: {kvp.Value.Name}\nTotal Fees: {kvp.Value.CalculateFees()}");
             }
         }
         public override string ToString()
