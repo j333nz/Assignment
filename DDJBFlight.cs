@@ -10,7 +10,7 @@ namespace Assignment
     {
         public double RequestFee { get; set; } = 300;
         public DDJBFlight() { }
-        public DDJBFlight(string f, string o, string d, DateTime e, string s) : base(f, o, d, e, s) { }
+        public DDJBFlight(string f, string o, string d, DateTime e) : base(f, o, d, e) { }
 
         public override double CalculateFees()
         {

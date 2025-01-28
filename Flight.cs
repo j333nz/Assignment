@@ -12,15 +12,14 @@ namespace Assignment
         public string Origin { get; set; }
         public string Destination { get; set; }
         public DateTime ExpectedTime { get; set; }
-        public string Status { get; set; }
+        public string Status { get; set; } = "Unassigned";
         public Flight() { }
-        public Flight(string f, string o, string d, DateTime e, string s)
+        public Flight(string f, string o, string d, DateTime e)
         {
             FlightNumber = f;
             Origin = o;
             Destination = d;
             ExpectedTime = e;
-            Status = s;
         }
         public virtual double CalculateFees()
         {
