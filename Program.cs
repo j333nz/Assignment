@@ -597,52 +597,71 @@ void ProcessUnassignedFlights(Dictionary<string, Flight> flightsDict, Dictionary
 
     //display the Flight details with Basic Information of all Flights
     Console.WriteLine($"{"Flight Number",-16}{"Airline Name",-23}{"Origin",-23}{"Destination",-23}{"Expected Departure/Arrival Time",-36}{"Special Request Code",-23}{"Boarding Gate"}");
-    foreach (KeyValuePair<string, Flight> kvp in flightsDict)
+    foreach (KeyValuePair<string, Flight> keyvaluepair in flightsDict)
     {
-        foreach (KeyValuePair<string, string> keyvaluepair in airlinesDict)
+        Flight flight = keyvaluepair.Value;
+        // finding airline name for the flight
+        string airlineName = "";
+        foreach (KeyValuePair<string, string> airlineKvp in airlinesDict)
         {
-            foreach (KeyValuePair<string, string> PCkvp FlightAndSpecialCodeDict)
+            if (flight.FlightNumber.Contains(airlineKvp.Value))
             {
-                if (kvp.Value.FlightNumber.Contains(keyvaluepair.Value))
-                {
-                    if (PCkvp.Key == kvp.Key)
-                    {
-                        string specialCode = PCkvp.Value;
-                        string airlineName = keyvaluepair.Key;
-                        Console.WriteLine($"{kvp.Value.FlightNumber,-16}{airlineName,-23}{kvp.Value.Origin,-23}{kvp.Value.Destination,-23}{kvp.Value.ExpectedTime,-36}{specialCode,-23}{FlightNumToGate[kvp.Value.FlightNumber]}");
-                    }
-                }
+                airlineName = airlineKvp.Key;
+                break;
             }
         }
-    }
-
-    //display the total number of Flights and Boarding Gates processed and assigned
-    int totalFlightsProcessed = 0;
-    int totalBoardingGatesProcessed = 0;
-    foreach (KeyValuePair<string, Flight> kvp in flightsDict)
-    {
-        if (FlightNumToGate[kvp.Key] != "Unassigned")
+        // getting the special request code for the flight
+        string specialCode;
+        if (FlightAndSpecialCodeDict.ContainsKey(flight.FlightNumber))
         {
-            totalFlightsProcessed++;
+            specialCode = FlightAndSpecialCodeDict[flight.FlightNumber];
         }
-    }
-    foreach (KeyValuePair<string, BoardingGate> kvp in boardinggateDict)
-    {
-        if (kvp.Value.Flight != null)
+        else
         {
-            totalBoardingGatesProcessed++;
+            specialCode = "None";
         }
-    }
-    Console.WriteLine($"Total number of Flights processed and assigned: {totalFlightsProcessed}");
 
-    //display the total number of Flights and Boarding Gates that were processed automatically over those that were already assigned as a percentage
-    int percentageOfFlightsProcessed = (totalFlightsProcessed / countOfFlights) * 100;
-    int percentageOfBoardingGatesProcessed = (totalBoardingGatesProcessed / countOfBoardingGates) * 100;
-    Console.WriteLine($"Total number of flights processed automatically: {percentageOfFlightsProcessed:0.00}%");
-    Console.WriteLine($"Total number of boarding gates processed automatically: {percentageOfBoardingGatesProcessed:0.00}%");
+        // getting the boarding gate for the flight
+        string boardingGate;
+        if (FlightNumToGate.ContainsKey(flight.FlightNumber))
+        {
+            boardingGate = FlightNumToGate[flight.FlightNumber];
+        }
+        else
+        {
+            boardingGate = "Unassigned";
+        }
+        Console.WriteLine($"{flight.FlightNumber,-16}{airlineName,-23}{flight.Origin,-23}{flight.Destination,-23}{flight.ExpectedTime.ToString("dd/M/yyyy h:mm:ss tt"),-36}{specialCode,-23}{boardingGate}");
+
+        //display the total number of Flights and Boarding Gates processed and assigned
+        int totalFlightsProcessed = 0;
+        int totalBoardingGatesProcessed = 0;
+        foreach (KeyValuePair<string, Flight> kvp in flightsDict)
+        {
+            if (FlightNumToGate[kvp.Key] != "Unassigned")
+            {
+                totalFlightsProcessed++;
+            }
+        }
+        foreach (KeyValuePair<string, BoardingGate> kvp in boardinggateDict)
+        {
+            if (kvp.Value.Flight != null)
+            {
+                totalBoardingGatesProcessed++;
+            }
+        }
+        Console.WriteLine($"Total number of Flights processed and assigned: {totalFlightsProcessed}");
+
+        //display the total number of Flights and Boarding Gates that were processed automatically over those that were already assigned as a percentage
+        int percentageOfFlightsProcessed = (totalFlightsProcessed / flightsDict.Count()) * 100;
+        int percentageOfBoardingGatesProcessed = (totalBoardingGatesProcessed / boardinggateDict.Count()) * 100;
+        Console.WriteLine($"Total number of flights processed automatically: {percentageOfFlightsProcessed:0.00}%");
+        Console.WriteLine($"Total number of boarding gates processed automatically: {percentageOfBoardingGatesProcessed:0.00}%");
+    }
 }
 
 //(b) Display the total fee per airline for the day
+
 //(c) Recommend an additional feature to be implemented (bonus marks are only awarded if the advanced feature is completed)
 
 //main loop
@@ -668,7 +687,7 @@ while (true)
         Console.WriteLine("=============================================" +
             "\nList of Flights for Changi Airport Terminal 5" +
             "\n=============================================");
-        Console.WriteLine($"{"Flight Number", -16} {"Airline Name", -23} {"Origin", -23} {"Destination",-23} {"Expected Depareture/Arrival"}");
+        Console.WriteLine($"{"Flight Number",-16} {"Airline Name",-23} {"Origin",-23} {"Destination",-23} {"Expected Depareture/Arrival"}");
         ListAllFlights(airlinesDict, flightsDict);
     }
     else if (option == 2)
@@ -682,8 +701,8 @@ while (true)
     else if (option == 3)
     {
         Console.WriteLine("=============================================" +
-                         "\nAssign a Boarding Gate to a Flight" +
-                         "\n=============================================");
+                            "\nAssign a Boarding Gate to a Flight" +
+                            "\n=============================================");
         AssignBoardingGateToFlight(flightsDict, boardinggateDict, FlightAndSpecialCodeDict);
     }
     else if (option == 4)

@@ -8,13 +8,14 @@ namespace Assignment
 {
     class DDJBFlight : Flight
     {
-        public double RequestFee { get; set; } = 300;
+        public double RequestFee { get; set; }
         public DDJBFlight() { }
         public DDJBFlight(string f, string o, string d, DateTime e) : base(f, o, d, e) { }
 
         public override double CalculateFees()
         {
-            return base.CalculateFees() + RequestFee;
+            double additionalfee = 300;
+            return base.CalculateFees() + additionalfee;
         }
         public override string ToString()
         {

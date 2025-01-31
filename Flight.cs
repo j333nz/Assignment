@@ -23,18 +23,19 @@ namespace Assignment
         }
         public virtual double CalculateFees()
         {
+            double baseFee = 300;
+            double originDestinationFee = 0;
             if (Origin == "Singapore (SIN)")
             {
-                return 800;
+                originDestinationFee = 800;
+                return originDestinationFee;
             }
             else if (Destination == "Singapore (SIN)")
             {
-                return 500;
+                originDestinationFee = 800;
+                return originDestinationFee;
             }
-            else
-            {
-                return 0;
-            }
+            return baseFee + originDestinationFee;
         }
 
         public int CompareTo(Flight other)
