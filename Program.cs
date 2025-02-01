@@ -4,16 +4,10 @@
 // Partner Name  : Ho Zhen Yi - Q1, Q4, Q7, Q8
 //==========================================================
 
-//Dictionary list: (so we dont keep scrolling through the code LOL)
-//Dictionary<string, string> FlightNumToGate key: FlightNumber, value: BoardingGateName
-//Dictionary<string, string> airlinesDict key: AirlineName, value: AirlineCode
-//Dictionary<string, BoardingGate> boardinggateDict key: BoardingGateName, value: BoardingGate
-//Dictionary<string, Flight> flightsDict key: FlightNumber, value: Flight
-//Dictionary<string, string> FlightAndSpecialCodeDict key: FlightNumber, value: SpecialCode
-
 using System;
 using System.ComponentModel;
 using System.Globalization;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using Assignment;
 
@@ -317,53 +311,63 @@ void ListOfAirlines(Dictionary<string, string> airlinesDict)
 //Q7 - completed Ho Zhen Yi S10267291
 void DisplayAirlineFlights(Dictionary<string, string> airlinesDict, Dictionary<string, Flight> flightsDict)
 {
-    Console.Write("Enter Airline Code: ");
-    string airlineCode = Console.ReadLine().ToUpper();
-    Console.WriteLine("\n=============================================");
-    string airlineName = "";
-    foreach (KeyValuePair<string, string> kvp in airlinesDict)
+    while (true)
     {
-        if (kvp.Value == airlineCode)
+        Console.Write("Enter Airline Code: ");
+        string airlineCode = Console.ReadLine().ToUpper();
+        Console.WriteLine("\n=============================================");
+        string airlineName = "";
+        foreach (KeyValuePair<string, string> kvp in airlinesDict)
         {
-            airlineName = kvp.Key; 
-            break;
-        }
-    }
-    if (airlinesDict.ContainsValue(airlineCode))
-    {
-        Console.WriteLine($"List of Flights for {airlineName}");
-        Console.WriteLine("=============================================");
-        Console.WriteLine($"{"Flight Number",-17}{"Airline Name",-23}{"Origin",-23}{"Destination",-20}{"Expected"}");
-        foreach (Flight flight in flightsDict.Values)
-        {
-            if (flight.FlightNumber.Contains(airlineCode))
+            if (kvp.Value == airlineCode)
             {
-                Console.WriteLine($"{flight.FlightNumber,-17}{airlineName,-23}{flight.Origin,-23}{flight.Destination,-20}{flight.ExpectedTime}");
+                airlineName = kvp.Key;
+                break;
             }
         }
-        Console.WriteLine("\nEnter Flight Number to view details: ");
-        string flightNumber = Console.ReadLine().ToUpper();
-
-        if (flightsDict.ContainsKey(flightNumber))
+        if (airlinesDict.ContainsValue(airlineCode))
         {
-            Flight selectedFlight = flightsDict[flightNumber];
-            Console.WriteLine($"\nFlight Details:");
-            Console.WriteLine($"Flight Number: {selectedFlight.FlightNumber}");
-            Console.WriteLine($"Airline: {airlineName}");
-            Console.WriteLine($"Origin: {selectedFlight.Origin}");
-            Console.WriteLine($"Destination: {selectedFlight.Destination}");
-            Console.WriteLine($"Expected Departure/Arrival Time: {selectedFlight.ExpectedTime}");
-            Console.WriteLine($"Special Request Code: {FlightAndSpecialCodeDict[flightNumber]}");
-            Console.WriteLine($"Boarding Gate: {FlightNumToGate[flightNumber]}");
+            Console.WriteLine($"List of Flights for {airlineName}");
+            Console.WriteLine("=============================================");
+            Console.WriteLine($"{"Flight Number",-17}{"Airline Name",-23}{"Origin",-23}{"Destination",-20}{"Expected"}");
+            foreach (Flight flight in flightsDict.Values)
+            {
+                if (flight.FlightNumber.Contains(airlineCode))
+                {
+                    Console.WriteLine($"{flight.FlightNumber,-17}{airlineName,-23}{flight.Origin,-23}{flight.Destination,-20}{flight.ExpectedTime}");
+                }
+            }
         }
         else
         {
-            Console.WriteLine("Invalid Flight Number.");
+            Console.WriteLine("Invalid Airline Code.");
+            continue;
         }
-    }
-    else
-    {
-        Console.WriteLine("Invalid Airline Code.");
+        Console.WriteLine("\nEnter Flight Number to view details: ");
+        string flightNumber = Console.ReadLine().ToUpper();
+        foreach (KeyValuePair<string, Flight> kvp in flightsDict)
+        {
+            if (kvp.Value.FlightNumber.Replace(" ", "") == flightNumber)
+            {
+                flightNumber = kvp.Key;
+                break;
+            }
+            else
+            {
+                Console.WriteLine("Invalid Flight Number.");
+                continue;
+            }
+        }
+        Flight selectedFlight = flightsDict[flightNumber];
+        Console.WriteLine($"\nFlight Details:");
+        Console.WriteLine($"Flight Number: {selectedFlight.FlightNumber}");
+        Console.WriteLine($"Airline: {airlineName}");
+        Console.WriteLine($"Origin: {selectedFlight.Origin}");
+        Console.WriteLine($"Destination: {selectedFlight.Destination}");
+        Console.WriteLine($"Expected Departure/Arrival Time: {selectedFlight.ExpectedTime}");
+        Console.WriteLine($"Special Request Code: {FlightAndSpecialCodeDict[flightNumber]}");
+        Console.WriteLine($"Boarding Gate: {FlightNumToGate[flightNumber]}");
+        break;
     }
 }
 
@@ -512,7 +516,7 @@ void DisplayFlightSchedule(Dictionary<string, Flight> flightsDict, Dictionary<st
 
 
 //ADVANCE FEATURES
-//(a) Process all unassigned flights to boarding gates in bulk - Completed but haven't tested - Pang Ai Jie Jennie S10268150
+//(a) Process all unassigned flights to boarding gates in bulk - Pang Ai Jie Jennie S10268150
 void ProcessUnassignedFlights(Dictionary<string, Flight> flightsDict, Dictionary<string, BoardingGate> boardinggateDict, Dictionary<string, string> FlightAndSpecialCodeDict, Dictionary<string, string> FlightNumToGate)
 {
     //add unassigned flights to queue and display total number of unassigned flights
@@ -547,9 +551,9 @@ void ProcessUnassignedFlights(Dictionary<string, Flight> flightsDict, Dictionary
             {
                 if (Bkvp.Value.SupportsDDJB == true)
                 {
-                    FlightNumToGate[unassigned.FlightNumber] = Bkvp.Key;
-                    Bkvp.Value.Flight = unassigned;
-                    unassignedBoardingGates.Remove(Bkvp.Key);
+                    FlightNumToGate[unassigned.FlightNumber] = Bkvp.Key; //assign flight to gate
+                    Bkvp.Value.Flight = unassigned; //assign gate to flight
+                    unassignedBoardingGates.Remove(Bkvp.Key); //remove gate from unassigned gate dictionary
                     break;
                 }
             }
@@ -596,7 +600,7 @@ void ProcessUnassignedFlights(Dictionary<string, Flight> flightsDict, Dictionary
     }
 
     //display the Flight details with Basic Information of all Flights
-    Console.WriteLine($"{"Flight Number",-16}{"Airline Name",-23}{"Origin",-23}{"Destination",-23}{"Expected Departure/Arrival Time",-36}{"Special Request Code",-23}{"Boarding Gate"}");
+    Console.WriteLine($"\n{"Flight Number",-16}{"Airline Name",-23}{"Origin",-23}{"Destination",-23}{"Expected Departure/Arrival Time",-36}{"Special Request Code",-23}{"Boarding Gate"}");
     foreach (KeyValuePair<string, Flight> keyvaluepair in flightsDict)
     {
         Flight flight = keyvaluepair.Value;
@@ -632,6 +636,7 @@ void ProcessUnassignedFlights(Dictionary<string, Flight> flightsDict, Dictionary
             boardingGate = "Unassigned";
         }
         Console.WriteLine($"{flight.FlightNumber,-16}{airlineName,-23}{flight.Origin,-23}{flight.Destination,-23}{flight.ExpectedTime.ToString("dd/M/yyyy h:mm:ss tt"),-36}{specialCode,-23}{boardingGate}");
+    }
 
         //display the total number of Flights and Boarding Gates processed and assigned
         int totalFlightsProcessed = 0;
@@ -650,19 +655,47 @@ void ProcessUnassignedFlights(Dictionary<string, Flight> flightsDict, Dictionary
                 totalBoardingGatesProcessed++;
             }
         }
-        Console.WriteLine($"Total number of Flights processed and assigned: {totalFlightsProcessed}");
+        Console.WriteLine($"\nTotal number of Flights processed and assigned: {totalFlightsProcessed}");
 
         //display the total number of Flights and Boarding Gates that were processed automatically over those that were already assigned as a percentage
-        int percentageOfFlightsProcessed = (totalFlightsProcessed / flightsDict.Count()) * 100;
-        int percentageOfBoardingGatesProcessed = (totalBoardingGatesProcessed / boardinggateDict.Count()) * 100;
+        int alreadyAssignedFlights = flightsDict.Count() - unassignedFlights.Count();
+        int alreadyAssignedBoardingGates = boardinggateDict.Count() - unassignedBoardingGates.Count();
+        int percentageOfFlightsProcessed = (totalFlightsProcessed / alreadyAssignedFlights) * 100;
+        int percentageOfBoardingGatesProcessed = (totalBoardingGatesProcessed / alreadyAssignedBoardingGates) * 100;
         Console.WriteLine($"Total number of flights processed automatically: {percentageOfFlightsProcessed:0.00}%");
         Console.WriteLine($"Total number of boarding gates processed automatically: {percentageOfBoardingGatesProcessed:0.00}%");
+}
+
+//(b) Display the total fee per airline for the day - Ho Zhen Yi S10267291
+void DisplayTotalFees(Dictionary<string, Flight> flightsDict, Dictionary<string, BoardingGate> boardinggateDict, Dictionary<string, string> airlinesDict)
+{
+    Console.WriteLine($"{"Airline Name", -26}{"Subtotal ($)",-16}{"Discount Subtotal ($)",-26}{"Final Fee ($)",-18}{"% of subtotal discounts over final total"}");
+    string airlineName = "";
+    double subtotal = 0;
+    double subtotalDiscounts = 0;
+    double finalfee = 0;
+    double percentage = 0;
+
+    foreach (KeyValuePair<string, string> kvp in airlinesDict)
+    {
+        foreach (Flight flight in flightsDict.Values)
+        {
+            foreach (KeyValuePair<string, BoardingGate> bkvp in boardinggateDict)
+            {
+                if (flight.FlightNumber.Contains(kvp.Value))
+                {
+                    airlineName = kvp.Key;
+                    subtotal += flight.CalculateFees();
+                    subtotalDiscounts += bkvp.Value.CalculateFees();
+                }
+            }
+        }
+        finalfee = subtotal - subtotalDiscounts;
+        percentage = (subtotalDiscounts / finalfee) * 100;
+        Console.WriteLine($"{airlineName,-26}{subtotal,-16}{subtotalDiscounts,-26}{finalfee,-18}{percentage: 0.00}");
     }
 }
 
-//(b) Display the total fee per airline for the day
-
-//(c) Recommend an additional feature to be implemented (bonus marks are only awarded if the advanced feature is completed)
 
 //main loop
 while (true)
@@ -678,11 +711,12 @@ while (true)
         "\n6. Modify Flight Details" +
         "\n7. Display Flight Schedule" +
         "\n8. Process Unassigned Flights to Boarding Gates in Bulk" +
+        "\n9. Display the total fee per airline for the day" +
         "\n0. Exit");
     Console.WriteLine("\n\nPlease select your option:");
-    int option = Convert.ToInt32(Console.ReadLine());
+    string option = Console.ReadLine();
 
-    if (option == 1)
+    if (option == "1")
     {
         Console.WriteLine("=============================================" +
             "\nList of Flights for Changi Airport Terminal 5" +
@@ -690,7 +724,7 @@ while (true)
         Console.WriteLine($"{"Flight Number",-16} {"Airline Name",-23} {"Origin",-23} {"Destination",-23} {"Expected Depareture/Arrival"}");
         ListAllFlights(airlinesDict, flightsDict);
     }
-    else if (option == 2)
+    else if (option == "2")
     {
         Console.WriteLine("=============================================" +
             "\nList of Boarding Gates for Changi Airport Terminal 5" +
@@ -698,39 +732,49 @@ while (true)
         Console.WriteLine($"{"Gate Name",-17}{"DDJB",-24}{"CFFT",-24}{"LWTT"}");
         ListBoardingGates(boardinggateDict);
     }
-    else if (option == 3)
+    else if (option == "3")
     {
         Console.WriteLine("=============================================" +
                             "\nAssign a Boarding Gate to a Flight" +
                             "\n=============================================");
         AssignBoardingGateToFlight(flightsDict, boardinggateDict, FlightAndSpecialCodeDict);
     }
-    else if (option == 4)
+    else if (option == "4")
     {
         CreateFlight(flightsDict);
     }
-    else if (option == 5)
+    else if (option == "5")
     {
         ListOfAirlines(airlinesDict);
         DisplayAirlineFlights(airlinesDict, flightsDict);
     }
-    else if (option == 6)
+    else if (option == "6")
     {
         ListOfAirlines(airlinesDict);
         ModifyFlightDetailed(flightsDict, airlinesDict);
     }
-    else if (option == 7)
+    else if (option == "7")
     {
         Console.WriteLine("=============================================" +
             "\nFlight Schedule for Changi Airport Terminal 5" +
             "\n=============================================");
         DisplayFlightSchedule(flightsDict, airlinesDict, FlightNumToGate);
     }
-    else if (option == 8)
+    else if (option == "8")
     {
-        //ProcessUnassignedFlights(flightsDict, boardinggateDict, FlightAndSpecialCodeDict, FlightNumToGate);
+        Console.WriteLine("=============================================" +
+            "\nProcess Unassigned Flights to Boarding Gates in Bulk" +
+            "\n=============================================");
+        ProcessUnassignedFlights(flightsDict, boardinggateDict, FlightAndSpecialCodeDict, FlightNumToGate);
     }
-    else if (option == 0)
+    else if (option == "9")
+    {
+        Console.WriteLine("=============================================" +
+            "\nDisplay the total fee per airline for the day" +
+            "\n=============================================");
+        DisplayTotalFees(flightsDict, boardinggateDict, airlinesDict);
+    }
+    else if (option == "0")
     {
         Console.WriteLine("Goodbye!");
         break;

@@ -82,7 +82,7 @@ namespace Assignment
                     totalDiscounts += totalFeesBeforeDiscounts * 0.03;
                 }
                 totalFees -= totalDiscounts;
-                return totalFees;
+                return totalDiscounts;
         }
         public bool RemoveFlight(Flight f)
         {
